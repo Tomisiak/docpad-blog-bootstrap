@@ -1,0 +1,26 @@
+---
+layout: page
+title: Tag:
+search: ['html', 'post']
+---
+<% for tag in @document.search: %>
+  <% @document.title += " " + tag %>
+<% end %>
+<% for document in @findWithTags(@getCollection('posts').toJSON(), @document.search ): %>
+  <% strContent = String(document.contentRenderedWithoutLayouts) %>
+  <article id="post" class="post">
+    <header>
+      <%- @partial('post-header', {document: document}, {titleSize: 2}) %>
+    </header>
+
+    <div class="post-content text-justify">
+      <%- @getCuttedContent(strContent) %>
+    </div>
+    <% if @hasReadMore(strContent): %>
+    <div class="read-more">
+      <a href="<%= document.url %>"><strong>Read more</strong></a>
+    </div>
+    <% end %>
+  </article>
+<% end %>
+

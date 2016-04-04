@@ -21,7 +21,7 @@ docpadConfig = {
 			]
 
 			# The default title of our website
-			title: "Your Website"
+			title: "Blog"
 
 			# The website description (for SEO)
 			description: """
@@ -34,10 +34,10 @@ docpadConfig = {
 				"""
 
 			# The website author's name
-			author: "Your Name"
+			author: "Michal Tomsia"
 
 			# The website author's email
-			email: "your@email.com"
+			email: "michal.tomsia.mt@gmail.com"
 
 			# Styles
 			styles: [
@@ -79,6 +79,32 @@ docpadConfig = {
 			# Merge the document keywords with the site keywords
 			@site.keywords.concat(@document.keywords or []).join(', ')
 
+		# Get the cutted post content
+		getCuttedContent: (content) ->
+			i = content.search('<!-- Read more -->')
+			if i >= 0
+				content[0..i-1]
+			else
+				content
+		# Check if post need to have content cutted
+		hasReadMore: (content) ->
+			content.search('<!-- Read more -->') >= 0
+
+		removeDuplicates: (array) ->
+			result = []
+			for el in array
+				result.push tag for tag in el.tags when tag not in result
+			result
+
+		findWithTags: (array, tagArray) ->
+			result = array.slice()
+			for el in array
+				for tag in tagArray
+					if tag not in el.tags
+						result.splice(result.indexOf(el), 1)
+						break
+			result
+
 
 	# =================================
 	# Collections
@@ -105,7 +131,13 @@ docpadConfig = {
 					tarExtractClean: true
 				}
 			]
-
+		tags:
+			extension: '.html'
+			injectDocumentHelper: (doc) ->
+				doc.setMeta {layout: 'tag'}
+		ghpages:
+			deployRemote: 'target'
+			deployBranch: 'master'
 
 	# =================================
 	# DocPad Events

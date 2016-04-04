@@ -38,7 +38,7 @@
 </head>
 <body>
 	<!-- Menu -->
-	<div class="navbar navbar-inverse navbar-fixed-top">
+	<header class="navbar navbar-inverse navbar-fixed-top">
 		<div class="container">
 			<div class="navbar-header">
 				<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
@@ -46,7 +46,7 @@
 					<span class="icon-bar"></span>
 					<span class="icon-bar"></span>
 				</button>
-				<a class="navbar-brand" href="/">Project name</a>
+				<a class="navbar-brand" href="/">Blog</a>
 			</div>
 			<div class="navbar-collapse collapse">
 				<ul class="nav navbar-nav">
@@ -64,17 +64,48 @@
 				</ul>
 			</div><!--/.navbar-collapse -->
 		</div>
-	</div>
+	</header>
 
 	<!-- Content -->
 	<div class="container">
 		<!-- Content -->
-		<section id="content" class="content">
+		<section id="content" class="content col-md-8">
 			<%- @content %>
 		</section>
 
+		<aside class="col-md-offset-1 col-md-3">
+			<div class="well">
+				<div class="col-md-6">
+					<h4>Tags</h4>
+				</div>
+				<div class="col-md-2 col-md-offset-3">
+					<span class="btn-group">
+						<button class="btn btn-mini dropdown-toggle" data-toggle="dropdown">
+							<span class="caret"></span>
+						</button>
+						<ul class="dropdown-menu">
+							<li><a href="/filter" id="filter-link">Filter posts</a></li>
+						</ul>
+					</span>
+				</div>
+
+				<div class="row">
+					<div class="col-md-12">
+						<div class="btn-group blocks" data-toggle="buttons">
+							<% for tag in @removeDuplicates(@getCollection('posts').toJSON()): %>
+								<label class="btn btn-primary" id="<%= tag %>">
+									<input type="checkbox" autocomplete="off"><%= tag %>
+								</label>
+							<% end %>
+						</div>
+					</div>
+				</div>
+			</div>
+		</aside>
+
 		<!-- Footer -->
-		<footer>
+		<footer class="col-md-12">
+			<hr/>
 			<p class="pull-left">&copy; Company <%- (new Date()).getFullYear() %></p>
 			<p class="pull-right">
 				This website was last updated at <%= @site.date.toISOString() %>
